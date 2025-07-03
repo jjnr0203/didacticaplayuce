@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.classList.add('fade-in');
     }
 
+
     const avatarOptions = document.querySelectorAll('.avatar-option');
     const playerNameInput = document.getElementById('player-name');
     const startGameButton = document.getElementById('start-game');
@@ -138,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 question: "SELECCIONA LAS PALABRAS CORRECTAS que pertenecen al 'Campo semántico de Deportes':",
                 allWords: ["fútbol", "baloncesto", "natación", "atletismo", "ajedrez", "poker", "lectura", "pintura", "voleibol", "ciclismo", "esgrima", "programación"],
                 correctWords: ["fútbol", "baloncesto", "natación", "atletismo", "voleibol", "ciclismo", "esgrima"],
-                maxSelections: 7,
+                maxSelections: 8,
                 videoSrc: ""
             }
         ]
