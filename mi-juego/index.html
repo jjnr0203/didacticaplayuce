@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascenso Cósmico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container" class="hidden"> <div id="avatar-selection">
+            <h1>Ascenso Cósmico</h1>
+            <h2>Inicia tu camino con uno de ellos</h2>
+            <div class="avatars">
+                <img src="images/avatar1.jpeg" alt="Avatar 1" data-avatar="avatar1" class="avatar-option">
+                <img src="images/avatar2.jpeg" alt="Avatar 2" data-avatar="avatar2" class="avatar-option">
+                <img src="images/avatar3.jpeg" alt="Avatar 3" data-avatar="avatar3" class="avatar-option">
+            </div>
+            <div class="input-group">
+                <label for="player-name">Explorador:</label>
+                <input type="text" id="player-name" placeholder="Ingresa tu nombre">
+            </div>
+            <button id="start-game" disabled>Iniciar Ascenso</button>
+        </div>
+
+        <div id="game-play-screen" class="hidden">
+            <p id="welcome-message"></p>
+            <div id="question-container">
+                <p id="question-counter"></p>
+                <p id="lives-counter"></p>
+                <div id="video-explanation" class="hidden">
+                    <video id="question-video" controls playsinline>
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                </div>
+                <div id="question-area">
+                    <p id="current-question-text" class="question-text"></p>
+                </div>
+                <div id="answers-area" class="answers-grid">
+                    </div>
+                <div id="sub-question-area" class="hidden">
+                    <p id="sub-question-text" class="question-text"></p>
+                    <div id="sub-answers-area" class="answers-grid">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="level-complete-message" class="screen hidden justify-content-center"> <h2>¡Nivel 1 Completado!</h2>
+            <p id="level-score">Has respondido X de Y preguntas correctamente.</p>
+            <p id="countdown-message" class="hidden">Continuando en <span id="countdown-timer">5</span> segundos...</p>
+            <button id="proceed-to-next-level">Continuar al Siguiente Nivel</button>
+        </div>
+
+        <div id="game-over-screen" class="screen hidden"> <h2>¡Fin del Juego!</h2>
+            <p>Has terminado tu ascenso, Explorador <span id="game-over-player-name"></span></p>
+            <p>Tu puntuación final fue: <span id="game-over-score">0</span> puntos.</p>
+            <button id="restart-game-button">Reintentar Ascenso</button>
+        </div>
+
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>

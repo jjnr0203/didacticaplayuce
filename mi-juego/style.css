@@ -1,0 +1,788 @@
+/* Restablecimientos básicos y fuentes */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #0a0a20;
+    background-image: url("images/galaxia.jpeg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #e0f0ff;
+    overflow: hidden; 
+    animation: moveGalaxy 60s linear infinite;
+    font-size: 16px; /* Tamaño de fuente base para REM */
+}
+
+/* Animación para mover el fondo de la galaxia */
+@keyframes moveGalaxy {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+#game-container {
+    background-color: rgba(10, 10, 30, 0.85);
+    padding: 3vmin; 
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.4), 0 0 10px rgba(0, 200, 255, 0.2);
+    text-align: center;
+    width: 95%; 
+    max-width: 900px; 
+    
+    max-height: 95vh; 
+    overflow-y: auto; 
+    
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 200, 255, 0.3);
+    animation: fadeIn 1s ease-out;
+    box-sizing: border-box; 
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* H1 y H2 globales: aplicarán a Game Over y Level Complete, pero serán anulados
+   para la selección de avatar si definimos reglas más específicas. */
+h1, h2 {
+    color: #9affff;
+    text-shadow: 0 0 8px rgba(154, 255, 255, 0.6);
+    font-size: clamp(1.2em, 2.8vw, 1.8em); 
+    margin-bottom: 10px; 
+    margin-top: 15px; 
+}
+
+#avatar-selection {
+    margin-bottom: 40px;
+    animation: slideInUp 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+    max-width: 400px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    box-sizing: border-box; 
+}
+
+/* Tamaño de letra para h1 y h2 DENTRO de #avatar-selection */
+#avatar-selection h1 {
+    font-size: clamp(1.8em, 4.5vw, 2.5em); 
+    margin-bottom: 15px; 
+}
+
+#avatar-selection h2 {
+    font-size: clamp(1.2em, 3.5vw, 2em); 
+    margin-bottom: 20px; 
+}
+
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.input-group {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Tamaño de letra para la etiqueta (label) de nombre DENTRO de .input-group */
+.input-group label {
+    display: block;
+    font-size: clamp(1.1em, 2.5vw, 1.3em); 
+    margin-bottom: 10px;
+    color: #c0d0ff;
+    text-shadow: 0 0 5px rgba(192, 208, 255, 0.4);
+    font-weight: 500;
+}
+
+.input-group input {
+    padding: 12px 20px;
+    width: 80%; 
+    max-width: 350px;
+    border-radius: 25px;
+    border: 2px solid #00aaff;
+    background-color: rgba(0, 0, 40, 0.6);
+    color: #e0f0ff;
+    font-size: clamp(0.9em, 2.2vw, 1em); 
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    text-align: center;
+    outline: none;
+    box-sizing: border-box; 
+}
+
+.input-group input:hover {
+    border-color: #00e0ff;
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.7);
+}
+
+.input-group input:focus {
+    border-color: #5afffc;
+    box-shadow: 0 0 25px rgba(90, 255, 252, 0.8), inset 0 0 5px rgba(90, 255, 252, 0.3);
+    background-color: rgba(0, 0, 60, 0.8);
+}
+
+.input-group input::placeholder {
+    color: #a0c0ff;
+    opacity: 0.8;
+}
+
+.avatars {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+    margin-bottom: 25px;
+    gap: 10px; 
+}
+
+.avatars img {
+    width: clamp(65px, 14vw, 85px); 
+    height: clamp(65px, 14vw, 85px); 
+    border-radius: 50%;
+    margin: 10px; 
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.avatars img:hover,
+.avatars img.avatar-focused {
+    transform: scale(1.2);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    border-color: #00f0ff;
+    z-index: 2;
+}
+
+.avatars img.avatar-others {
+    transform: scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.1);
+}
+
+.avatars img.selected {
+    border-color: #00e0ff;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+    transform: scale(1.1);
+}
+
+button {
+    padding: 12px 25px;
+    font-size: clamp(1em, 2.2vw, 1.1em); 
+    background: linear-gradient(45deg, #007bff, #00c0ff);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+button:hover {
+    background: linear-gradient(45deg, #00c0ff, #007bff);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(0, 123, 255, 0.6);
+}
+
+button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Nueva clase para ocultar elementos */
+.hidden {
+    display: none !important; 
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Transición para la visibilidad */
+.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease-in, transform 0.8s ease-in;
+}
+
+/* Estilos para la pantalla del juego (game-play-screen) */
+#game-play-screen {
+    padding: 10px 20px 20px 20px; 
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%; 
+    height: 100%; 
+    box-sizing: border-box; 
+}
+
+/* Estilos específicos para el mensaje de bienvenida */
+#welcome-message {
+    color: #e0f0ff; 
+    font-size: clamp(1em, 2.5vw, 1.3em); 
+    margin-top: 5px; 
+    margin-bottom: 10px; 
+    text-shadow: 0 0 5px rgba(192, 208, 255, 0.4); 
+}
+
+/* Estilos para el contenedor de preguntas */
+#question-container {
+    width: 95%; 
+    /* REDUCIDO AÚN MÁS EL ANCHO AQUÍ Y EL PADDING */
+    max-width: 700px; /* Antes 800px. Intentemos con 700px */
+    background-color: rgba(10, 10, 30, 0.9);
+    padding: 20px; /* Reducido de 25px */
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);
+    margin-top: 0px; 
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+    flex-shrink: 0; 
+    flex-grow: 1; 
+    overflow-y: auto; 
+    max-height: calc(100% - 40px); 
+    box-sizing: border-box;
+}
+
+/* Estilos para el contador de vidas */
+#lives-counter {
+    color: #ff6666; 
+    font-size: clamp(1em, 2.5vw, 1.2em);
+    font-weight: bold;
+    margin-top: 0px; 
+    margin-bottom: 5px; 
+    text-shadow: 0 0 5px rgba(255, 102, 102, 0.7);
+}
+
+#question-counter {
+    color: #e0f0ff;
+    font-size: clamp(0.9em, 2.2vw, 1em); 
+    font-weight: bold;
+    margin-bottom: 0px; 
+}
+
+/* Contenedor del video */
+#video-explanation {
+    width: 90%; 
+    max-width: 600px; 
+    position: relative;
+    padding-bottom: 35%; 
+    height: 0; 
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.6);
+    margin: 0 auto 10px auto; 
+}
+
+#video-explanation iframe,
+#video-explanation video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Estilos para la pregunta */
+#question-area {
+    background-color: rgba(0, 0, 40, 0.7);
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 170, 255, 0.4);
+    box-shadow: inset 0 0 10px rgba(0, 170, 255, 0.3);
+}
+
+.question-text {
+    color: #e0f0ff;
+    font-size: clamp(1em, 2.5vw, 1.2em); 
+    font-weight: 500;
+    margin: 0; 
+    text-align: justify; 
+}
+
+/* Contenedor de las respuestas (botones) */
+.answers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+
+/* Estilos para los botones de respuesta */
+.answer-button {
+    padding: 15px 20px;
+    font-size: clamp(0.85em, 2.2vw, 1em); 
+    background: linear-gradient(45deg, #2a6edc, #0099ff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.answer-button:hover {
+    background: linear-gradient(45deg, #0099ff, #2a6edc);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
+}
+
+/* Estilos para respuestas correctas/incorrectas (aplicadas por JS) */
+.answer-button.correct {
+    background: linear-gradient(45deg, #28a745, #2ecc71); 
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
+    border: 2px solid #28a745;
+}
+
+.answer-button.incorrect {
+    background: linear-gradient(45deg, #dc3545, #e74c3c); 
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.8);
+    border: 2px solid #dc3545;
+}
+
+.answer-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: #555;
+    box-shadow: none;
+    transform: none;
+}
+
+/* --- Estilos Estéticos para los Inputs del Nivel 2 --- */
+
+/* Contenedor general para los campos de texto (flexbox para organizar) */
+#text-input-fields-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los inputs se envuelvan en varias líneas */
+    gap: 15px; /* Espacio entre los inputs y las filas de inputs */
+    justify-content: center;
+    margin-top: 20px; /* Separación de la pregunta */
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para el contenedor de inputs */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px; /* Padding interno para separación */
+    box-sizing: border-box; /* Asegura que padding no aumente el tamaño total */
+}
+
+/* Fila para agrupar inputs (si son de a 2 por fila) */
+.text-input-row {
+    display: flex;
+    gap: 15px; /* Espacio entre inputs dentro de la misma fila */
+    justify-content: center;
+    width: 100%; /* Ocupa todo el ancho disponible del contenedor padre */
+}
+
+/* Estilos de cada campo de texto individual */
+.text-answer-input {
+    flex: 1; /* Hace que los inputs tomen igual ancho dentro de su fila */
+    min-width: 100px; /* Ancho mínimo para cada input */
+    padding: 12px 18px; /* Relleno interno */
+    border: 2px solid #00aaff; /* Borde azul brillante */
+    border-radius: 25px; /* Bordes redondeados para estética moderna */
+    font-size: clamp(0.95em, 2.3vw, 1.05em); /* Tamaño de fuente responsivo */
+    background-color: rgba(0, 0, 40, 0.7); /* Fondo oscuro semi-transparente */
+    color: #e0f0ff; /* Texto claro */
+    outline: none; /* Elimina el contorno de enfoque por defecto */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+    text-align: center; /* Texto centrado en el input */
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.4); /* Sombra exterior sutil */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
+}
+
+/* Estilos al pasar el ratón por encima (hover) */
+.text-answer-input:hover {
+    border-color: #00e0ff; /* Borde más brillante al hover */
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.6); /* Sombra más intensa al hover */
+}
+
+/* Estilos al enfocar (focus) el input */
+.text-answer-input:focus {
+    border-color: #5afffc; /* Borde cian vibrante al enfocar */
+    box-shadow: 0 0 25px rgba(90, 255, 252, 0.8), inset 0 0 5px rgba(90, 255, 252, 0.3); /* Sombra y brillo interior al enfocar */
+    background-color: rgba(0, 0, 60, 0.8); /* Fondo ligeramente más oscuro */
+}
+
+/* Estilos para el texto de marcador de posición (placeholder) */
+.text-answer-input::placeholder {
+    color: #a0c0ff; /* Color de placeholder más claro */
+    opacity: 0.7; /* Ligeramente transparente */
+}
+
+/* Estilos para inputs deshabilitados */
+.text-answer-input[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 20, 0.5); /* Fondo más oscuro cuando deshabilitado */
+    border-color: #333;
+    box-shadow: none;
+}
+
+/* Estilos para el botón de enviar respuestas del Nivel 2 */
+.submit-text-button {
+    margin-top: 30px; /* Separación del input */
+    padding: 15px 35px; /* Relleno generoso */
+    font-size: clamp(1em, 2.5vw, 1.2em); /* Tamaño de fuente responsivo */
+    background: linear-gradient(45deg, #00bfff, #0080ff); /* Degradado azul */
+    color: white;
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    box-shadow: 0 5px 20px rgba(0, 128, 255, 0.5); /* Sombra exterior */
+}
+
+.submit-text-button:hover:not(:disabled) {
+    background: linear-gradient(45deg, #0080ff, #00bfff); /* Degradado invertido al hover */
+    transform: translateY(-3px); /* Pequeño levantamiento al hover */
+    box-shadow: 0 8px 25px rgba(0, 128, 255, 0.8); /* Sombra más intensa al hover */
+}
+
+.submit-text-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Feedback de las respuestas del Nivel 2 */
+.feedback-message {
+    margin-top: 20px;
+    font-size: clamp(1em, 2.5vw, 1.2em);
+    font-weight: bold;
+    color: #ffcc00; /* Amarillo brillante para feedback */
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+/* --- Level Complete Screen --- */
+#level-complete-message {
+    padding: 30px;
+    background-color: rgba(10, 10, 30, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+    margin-top: 10px; 
+    width: 90%;
+    max-width: 600px;
+    flex-shrink: 0;
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#level-complete-message h2 {
+    color: #00ffaa;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+    font-size: clamp(1.1em, 2.8vw, 1.5em); 
+    margin-bottom: 10px; 
+}
+
+#level-complete-message p {
+    font-size: clamp(0.9em, 2.2vw, 1.1em); 
+    color: #e0f0ff;
+    margin-top: 15px; 
+    margin-bottom: 20px; 
+}
+
+#proceed-to-next-level {
+    margin-top: 20px; 
+    padding: 15px 30px;
+    font-size: clamp(1em, 2.5vw, 1.2em); 
+    background: linear-gradient(45deg, #00ffaa, #00c0ff);
+    box-shadow: 0 5px 20px rgba(0, 255, 170, 0.6);
+}
+
+#proceed-to-next-level:hover {
+    background: linear-gradient(45deg, #00c0ff, #00ffaa);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 255, 170, 0.9);
+}
+
+/* Estilos para la pantalla de Game Over */
+#game-over-screen {
+    padding: 30px;
+    background-color: rgba(30, 0, 0, 0.95); 
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+    margin-top: 10px; 
+    width: 90%;
+    max-width: 600px;
+    flex-shrink: 0;
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    box-sizing: border-box;
+    color: #ffdddd; 
+}
+
+#game-over-screen h2 {
+    color: #ff4444;
+    text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+    font-size: clamp(1.4em, 3.5vw, 2em);
+    margin-bottom: 10px; 
+}
+
+#game-over-screen p {
+    font-size: clamp(1em, 2.5vw, 1.2em);
+    margin-top: 15px; 
+    margin-bottom: 20px; 
+}
+
+#game-over-screen #restart-game-button {
+    background: linear-gradient(45deg, #ff6666, #ff0000);
+    box-shadow: 0 5px 20px rgba(255, 0, 0, 0.6);
+    margin-top: 20px; 
+}
+
+#game-over-screen #restart-game-button:hover {
+    background: linear-gradient(45deg, #ff0000, #ff6666);
+    box-shadow: 0 8px 25px rgba(255, 0, 0, 0.9);
+}
+
+
+/* --- Media Queries para adaptar a pantallas más pequeñas --- */
+
+@media (max-width: 768px) {
+    #game-container {
+        padding: 2vmin; 
+        border-radius: 10px;
+        width: 95%; 
+        max-width: 900px; 
+    }
+
+    #avatar-selection {
+        max-width: 400px; 
+    }
+
+    .avatars img {
+        margin: 8px; 
+    }
+    
+    .answers-grid {
+        grid-template-columns: 1fr; 
+    }
+
+    .answer-button {
+        padding: 12px 15px; 
+    }
+
+    #video-explanation {
+        width: 95%; 
+        margin-bottom: 10px; 
+    }
+
+    /* Media query para h1 y h2 DENTRO de #avatar-selection en pantallas pequeñas */
+    #avatar-selection h1 {
+        font-size: clamp(1.6em, 5vw, 2.2em);
+        margin-bottom: 10px;
+    }
+    #avatar-selection h2 {
+        font-size: clamp(1.1em, 3vw, 1.8em);
+        margin-bottom: 15px;
+    }
+    .input-group label {
+        font-size: clamp(1em, 2.8vw, 1.2em); 
+    }
+
+    /* Ajuste para el ancho del contenedor de preguntas para tablets */
+    #question-container {
+        width: 98%; 
+        max-width: 600px; /* Reducido de 700px para tablets */
+        padding: 15px; /* Reducido de 20px */
+        margin-top: 0px; 
+        padding-top: 15px; 
+    }
+
+    #game-play-screen {
+        padding-top: 5px; 
+    }
+
+    #welcome-message {
+        margin-bottom: 8px; 
+    }
+
+    /* Media Queries para Inputs (para asegurar que siguen siendo estéticos en pantallas pequeñas) */
+    #text-input-fields-container {
+        gap: 10px;
+        padding: 8px;
+    }
+
+    .text-input-row {
+        flex-direction: column; /* Apila inputs en pantallas más pequeñas si hay más de uno por fila */
+        gap: 10px;
+    }
+
+    .text-answer-input {
+        min-width: unset; /* Permite que el ancho sea flexible */
+        width: 90%; /* Ajuste a un porcentaje fijo para asegurar que se vean bien */
+        max-width: 300px; /* Límite para que no se hagan muy grandes */
+        margin: 0 auto; /* Centrar el input */
+        padding: 10px 15px;
+    }
+
+    .submit-text-button {
+        padding: 12px 25px;
+        font-size: clamp(0.9em, 2.8vw, 1.1em);
+        margin-top: 25px;
+    }
+
+    .feedback-message {
+        font-size: clamp(0.9em, 2.8vw, 1.1em);
+    }
+}
+
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: clamp(1em, 4vw, 1.4em); 
+        margin-bottom: 8px; 
+        margin-top: 10px; 
+    }
+
+    #game-container {
+        padding: 1vmin; 
+        max-height: 98vh; 
+        width: 95%; 
+    }
+
+    #avatar-selection {
+        max-width: 280px; 
+    }
+
+    .input-group input {
+        padding: 8px 12px; 
+        width: 90%; 
+    }
+
+    .avatars img {
+        width: clamp(50px, 15vw, 70px); 
+        height: clamp(50px, 15vw, 70px);
+        margin: 4px; 
+    }
+
+    /* Media query para h1 y h2 DENTRO de #avatar-selection en pantallas muy pequeñas */
+    #avatar-selection h1 {
+        font-size: clamp(1.4em, 5.5vw, 2em);
+        margin-bottom: 8px;
+    }
+    #avatar-selection h2 {
+        font-size: clamp(1em, 3.8vw, 1.6em);
+        margin-bottom: 10px;
+    }
+    .input-group label {
+        font-size: clamp(0.95em, 2.5vw, 1.15em); 
+    }
+
+    #welcome-message {
+        font-size: clamp(0.9em, 2.8vw, 1.2em);
+        margin-top: 0px; 
+        margin-bottom: 8px; 
+    }
+
+    #question-container {
+        margin-top: 0px; 
+        padding: 10px; /* Reducido de 15px */
+        gap: 10px; 
+        padding-top: 10px; 
+        width: 98%; 
+        max-width: unset; 
+    }
+
+    #lives-counter {
+        margin-top: 0px; 
+        margin-bottom: 3px; 
+    }
+    #question-counter {
+        margin-bottom: 0px; 
+    }
+
+    .question-text {
+        font-size: clamp(0.85em, 3.2vw, 1em); 
+    }
+
+    .answers-grid {
+        grid-template-columns: 1fr; 
+        gap: 8px; 
+        margin-top: 10px; 
+    }
+
+    .answer-button {
+        font-size: clamp(0.75em, 2.8vw, 0.9em); 
+        padding: 8px 10px;
+    }
+
+    #level-complete-message h2 {
+        font-size: clamp(0.9em, 3.5vw, 1.3em);
+        margin-bottom: 8px;
+    }
+    #level-complete-message p {
+        font-size: clamp(0.75em, 3.2vw, 0.95em);
+        margin-top: 10px;
+        margin-bottom: 15px;
+        justify-content: center;
+    }
+    #proceed-to-next-level {
+        font-size: clamp(0.85em, 3.2vw, 1em);
+        padding: 10px 18px;
+        margin-top: 15px;
+    }
+
+    #game-over-screen h2 {
+        font-size: clamp(1.2em, 5vw, 1.6em);
+        margin-bottom: 8px;
+    }
+    #game-over-screen p {
+        font-size: clamp(0.85em, 3.5vw, 1.05em);
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #game-over-screen #restart-game-button {
+        font-size: clamp(0.9em, 3.8vw, 1.1em);
+        margin-top: 15px;
+    }
+
+    /* Media Queries para Inputs (para asegurar que siguen siendo estéticos en pantallas muy pequeñas) */
+    #text-input-fields-container {
+        gap: 8px;
+        padding: 5px;
+    }
+
+    .text-input-row {
+        gap: 8px;
+    }
+    
+    .text-answer-input {
+        padding: 8px 12px;
+        font-size: clamp(0.85em, 3.2vw, 0.95em);
+    }
+
+    .submit-text-button {
+        padding: 10px 20px;
+        font-size: clamp(0.85em, 3.2vw, 1em);
+        margin-top: 20px;
+    }
+
+    .feedback-message {
+        font-size: clamp(0.8em, 3.2vw, 1em);
+    }
+}
