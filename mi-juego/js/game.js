@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let correctAnswersInCurrentLevel = 0; // Contador de preguntas completamente correctas en el nivel actual
 
     // Total de niveles definidos en el juego
-    const totalLevels = 2;
+    const totalLevels = 3; 
 
     let selectedAssociationOptions = {
         main: [],
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 type: "text_input",
                 // Pregunta ajustada para 4 inputs y un campo semántico más conciso
-                question: `Escriba cuatro elementos que pertenezcan al campo semántico'FRUTAS REDONDAS':`,
+                question: `Escriba cuatro elementos que pertenezcan al campo semántico 'FRUTAS REDONDAS':`,
                 
                 correctAnswers: ["manzana", "platano", "fresa", "naranja", "pera", "kiwi", "mango", "uva", "sandía", "melón", "cereza", "papaya", "coco", "limón", "piña"], // Ampliado pero solo 4 serán evaluadas
                 numInputs: 4 , // <-- Establecido a 4 inputs
@@ -122,6 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         ], 
         // --- FIN DEL NIVEL 2 ---
+        // ¡IMPORTANTE! Asegúrate de que haya una coma aquí para separar los niveles
+        // --- INICIO DEL NIVEL 3 ---
+        level3: [
+            {
+                type: "semantic_field",
+                question: "SELECCIONA LAS PALABRAS CORRECTAS que pertenecen al 'Campo semántico de Literatura':",
+                allWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora", "ecuación", "biología", "velocidad", "gravedad"],
+                correctWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora"],
+                maxSelections: 8, // Máximo de palabras que el usuario puede seleccionar
+                videoSrc: ""
+            },
+            {
+                type: "semantic_field",
+                question: "SELECCIONA LAS PALABRAS CORRECTAS que pertenecen al 'Campo semántico de Deportes':",
+                allWords: ["fútbol", "baloncesto", "natación", "atletismo", "ajedrez", "poker", "lectura", "pintura", "voleibol", "ciclismo", "esgrima", "programación"],
+                correctWords: ["fútbol", "baloncesto", "natación", "atletismo", "voleibol", "ciclismo", "esgrima"],
+                maxSelections: 7,
+                videoSrc: ""
+            }
+        ]
+        // --- FIN DEL NIVEL 3 ---
     };
 
     // --- Funciones principales de lógica del juego ---
@@ -135,9 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updateLivesDisplay = () => {
-        livesCounter.textContent = `Vidas: ${'❤️'.repeat(lives)}`;
+        livesCounter.textContent = `Vidas: ${'🪐'.repeat(lives)}`;
         if (lives <= 0) {
-            livesCounter.textContent = `Vidas: 💔`;
+            livesCounter.textContent = `Vidas: ☠️`;
         }
     };
 
@@ -205,6 +226,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
             currentQuestionText.textContent = question.question;
             renderTextInputArea(question.numInputs); // Llama a la función para inputs de texto
+        }
+        else if (question.type === "semantic_field") { // Esto cubre el Nivel 3
+            answersGrid.style.display = 'flex';
+            answersGrid.style.flexDirection = 'column';
+            answersGrid.style.justifyContent = 'center';
+            answersGrid.style.alignItems = 'center';
+            answersGrid.style.gap = '15px';
+
+            // Crear el div para el título principal del campo semántico (ej. "Campo semántico de Literatura")
+            const semanticFieldMainTitleDiv = document.createElement('div');
+            semanticFieldMainTitleDiv.classList.add('semantic-field-main-box-title'); // Clase para estilos CSS
+
+            // Extrae el título del campo semántico de la pregunta (lo que está entre comillas simples)
+            const regexMatch = question.question.match(/'([^']+)'/); 
+            if (regexMatch && regexMatch[1]) {
+                semanticFieldMainTitleDiv.textContent = `Campo semántico de ${regexMatch[1]}`;
+            } else {
+                semanticFieldMainTitleDiv.textContent = "Campo Semántico"; // Fallback
+            }
+            answersGrid.appendChild(semanticFieldMainTitleDiv); // Añadirlo al answersGrid
+
+            // Configurar el texto de la instrucción (ej. "SELECCIONA LAS PALABRAS CORRECTAS")
+            currentQuestionText.textContent = "SELECCIONA LAS PALABRAS CORRECTAS"; 
+
+            // Renderizar las palabras seleccionables y el botón de enviar
+            renderSemanticFieldArea(question); // Pasa el objeto de pregunta completo
         }
         // Las preguntas de tipo "text" y "association_two_parts" no están en los niveles actuales,
         // pero se mantuvieron por si acaso para futuras expansiones, aunque ahora se han retirado
@@ -285,6 +332,54 @@ document.addEventListener('DOMContentLoaded', () => {
         if (numInputsToCreate > 0) {
             document.querySelector('.text-answer-input').focus();
         }
+    };
+
+    // Renderiza las palabras seleccionables y un botón de enviar (USADO EXCLUSIVAMENTE POR NIVEL 3)
+    const renderSemanticFieldArea = (questionData) => {
+        const wordsContainer = document.createElement('div');
+        wordsContainer.id = 'word-selection-container'; // ID para el estilo CSS
+        answersGrid.appendChild(wordsContainer);
+
+        wordsContainer.style.display = 'flex';
+        wordsContainer.style.flexWrap = 'wrap';
+        wordsContainer.style.justifyContent = 'center';
+        wordsContainer.style.gap = '10px';
+        wordsContainer.style.maxWidth = '80%'; 
+        wordsContainer.style.margin = '20px auto'; // Centrar y añadir espacio
+
+        questionData.allWords.forEach(word => {
+            const wordElement = document.createElement('span');
+            wordElement.textContent = word;
+            wordElement.classList.add('selectable-word'); // Clase para el estilo CSS
+            wordElement.dataset.word = word; // Almacenar la palabra en un dataset
+
+            wordElement.addEventListener('click', () => {
+                const selectedWords = wordsContainer.querySelectorAll('.selectable-word.selected').length;
+                const maxSelectionsAllowed = questionData.maxSelections || questionData.correctWords.length;
+
+                if (wordElement.classList.contains('selected')) {
+                    wordElement.classList.remove('selected'); 
+                } else if (selectedWords < maxSelectionsAllowed) {
+                    wordElement.classList.add('selected'); 
+                } else {
+                    // Feedback visual si se intenta seleccionar más del límite
+                    // Opcional: alert('Has alcanzado el límite de palabras a seleccionar.');
+                }
+            });
+            wordsContainer.appendChild(wordElement);
+        });
+
+        const submitButton = document.createElement('button');
+        submitButton.id = 'submit-semantic-field-answer-button'; // ID específico para este botón
+        submitButton.textContent = 'Enviar';
+        submitButton.classList.add('submit-answer-button'); // Clase de estilo general para botones de enviar
+        answersGrid.appendChild(submitButton);
+
+        submitButton.onclick = () => {
+            const selectedElements = wordsContainer.querySelectorAll('.selectable-word.selected');
+            const playerSelectedWords = Array.from(selectedElements).map(el => el.dataset.word);
+            handleSemanticFieldAnswer(playerSelectedWords, questionData, selectedElements, submitButton);
+        };
     };
 
     // Lógica de validación para las preguntas de text_input (APLICA SÓLO AL NIVEL 2)
@@ -399,6 +494,76 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 2500); // Esperar 2.5 segundos antes de pasar
     };
+
+    // Lógica de validación para las preguntas de campo semántico (APLICA SÓLO AL NIVEL 3)
+    const handleSemanticFieldAnswer = (playerSelectedWords, currentQuestionData, selectedElements, submitButton) => {
+        let isPerfectAnswer = true;
+        let correctSelectionsCount = 0;
+
+        const lowerCaseCorrectWords = currentQuestionData.correctWords.map(word => word.toLowerCase());
+        const lowerCasePlayerSelectedWords = playerSelectedWords.map(word => word.toLowerCase());
+
+        // Deshabilitar todas las palabras y el botón después de enviar
+        document.querySelectorAll('#word-selection-container .selectable-word').forEach(wordElement => {
+            wordElement.classList.add('disabled');
+            wordElement.style.pointerEvents = 'none'; // Asegura que no haya más clics
+        });
+        if (submitButton) submitButton.disabled = true;
+
+        // Iterar sobre las palabras seleccionadas por el jugador para dar feedback visual
+        selectedElements.forEach(wordElement => {
+            const word = wordElement.dataset.word.toLowerCase();
+            if (lowerCaseCorrectWords.includes(word)) {
+                wordElement.style.background = 'linear-gradient(45deg, #28a745, #2ecc71)'; // Verde
+                wordElement.style.borderColor = '#28a745';
+                wordElement.style.color = '#fff';
+                correctSelectionsCount++;
+            } else {
+                wordElement.style.background = 'linear-gradient(45deg, #dc3545, #e74c3c)'; // Rojo
+                wordElement.style.borderColor = '#dc3545';
+                wordElement.style.color = '#fff';
+                isPerfectAnswer = false; // Una selección incorrecta hace que la respuesta no sea perfecta
+            }
+            wordElement.classList.remove('selected'); // Elimina la clase 'selected' para que el color de feedback se aplique
+        });
+
+        // Verificar si se seleccionaron todas las correctas y no se seleccionaron incorrectas
+        // La respuesta es perfecta si:
+        // 1. El número de palabras correctas seleccionadas es igual al total de palabras correctas esperadas.
+        // 2. El número total de palabras seleccionadas por el jugador es igual al total de palabras correctas esperadas (no hay palabras incorrectas seleccionadas extra).
+        if (correctSelectionsCount !== lowerCaseCorrectWords.length || lowerCasePlayerSelectedWords.length !== lowerCaseCorrectWords.length) {
+            isPerfectAnswer = false;
+        }
+
+        // Resaltar las palabras correctas que el jugador NO seleccionó
+        lowerCaseCorrectWords.forEach(correctWord => {
+            if (!lowerCasePlayerSelectedWords.includes(correctWord)) {
+                const wordElement = document.querySelector(`#word-selection-container .selectable-word[data-word="${correctWord}"]`);
+                if (wordElement) {
+                    wordElement.style.border = '2px dashed #ffcc00'; // Borde amarillo
+                    wordElement.style.boxShadow = '0 0 10px rgba(255, 204, 0, 0.5)';
+                }
+            }
+        });
+
+        // Actualizar vidas y avanzar el juego
+        if (isPerfectAnswer) {
+            score += 10;
+            correctAnswersInCurrentLevel++;
+            setTimeout(() => advanceGame(true), 2500); // Esperar 2.5 segundos para mostrar feedback
+        } else {
+            lives--;
+            updateLivesDisplay();
+            setTimeout(() => {
+                if (lives <= 0) {
+                    showGameOverScreen(false);
+                } else {
+                    advanceGame(false);
+                }
+            }, 2500); // Esperar 2.5 segundos para mostrar feedback
+        }
+    };
+
 
     // Funciones para manejo de preguntas de asociación (NO USADAS EN NIVELES ACTUALES)
     const toggleAssociationSelection = (button, optionText, section) => {
@@ -527,6 +692,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     };
 
+    // Función auxiliar para avanzar el juego después de una respuesta (generalizado)
+    const advanceGame = (isCorrectAnswer) => {
+        if (isCorrectAnswer) {
+            // Ya se sumó el score y correctAnswersInCurrentLevel en las funciones handle específicas
+        } else {
+            // La lógica de vidas y showGameOverScreen ya está en las funciones handle específicas
+        }
+
+        currentQuestionIndex++;
+        loadQuestion(); // Carga la siguiente pregunta o la pantalla de nivel completado
+    };
+
     // Función para mostrar la pantalla de nivel completado
     const showLevelCompleteScreen = () => {
         if (gamePlayScreen) gamePlayScreen.classList.add('fade-out');
@@ -611,7 +788,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             playerNameInput.value = '';
             selectedAvatar = null;
-            document.querySelectorAll('.avatars img').forEach(img => img.classList.remove('selected', 'avatar-focused', 'avatar-others'));
+            document.querySelectorAll('.avatars img').forEach(img => img.classList.remove('selected', 'avatar-others')); // LIMPIAR SOLO ESTAS CLASES
             updateStartButtonState();
 
             currentLevel = 1;
@@ -652,7 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (levelCompleteScreen) {
                 levelCompleteScreen.classList.add('hidden');
-                levelCompleteScreen.classList.remove('fade-out');
+                levelCompleteScreen.classList.remove('fade-ont');
             }
 
             if (gameOverScreen) {
@@ -691,9 +868,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     avatarOptions.forEach(avatar => {
         avatar.addEventListener('click', () => {
-            avatarOptions.forEach(opt => opt.classList.remove('selected', 'avatar-focused', 'avatar-others'));
+            // Eliminar clases de estado de TODOS los avatares primero
+            avatarOptions.forEach(opt => opt.classList.remove('selected', 'avatar-others'));
+            
+            // Añadir 'selected' al avatar clickeado
             avatar.classList.add('selected');
             selectedAvatar = avatar.dataset.avatar;
+            
+            // Aplicar 'avatar-others' a todos los avatares que NO fueron clickeados
             avatarOptions.forEach(opt => {
                 if (opt !== avatar) {
                     opt.classList.add('avatar-others');
@@ -703,17 +885,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         avatar.addEventListener('mouseenter', () => {
-            avatarOptions.forEach(opt => {
-                if (opt !== avatar && !opt.classList.contains('selected')) {
-                    opt.classList.add('avatar-focused');
-                }
-            });
+            // Al pasar el mouse, asegurar que solo el avatar actual se "focalice" si no está ya seleccionado
+            if (!avatar.classList.contains('selected')) {
+                // No necesitamos una clase JS adicional para esto, CSS :hover lo maneja
+                // Pero podemos asegurarnos de que los "otros" se reduzcan temporalmente
+                avatarOptions.forEach(opt => {
+                    if (opt !== avatar && !opt.classList.contains('selected')) {
+                        opt.classList.add('avatar-others');
+                    }
+                });
+            }
         });
 
         avatar.addEventListener('mouseleave', () => {
+            // Al salir el mouse, revertir los "otros" si no hay un avatar seleccionado
             avatarOptions.forEach(opt => {
-                if (!opt.classList.contains('selected')) {
-                    opt.classList.remove('avatar-others', 'avatar-focused');
+                if (!opt.classList.contains('selected')) { // Solo revertir si no está seleccionado permanentemente
+                    opt.classList.remove('avatar-others');
                 }
             });
         });
