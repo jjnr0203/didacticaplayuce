@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Pregunta ajustada para 4 inputs y un campo semántico más conciso
                 question: `Escriba cuatro elementos que pertenezcan al campo semántico 'FRUTAS REDONDAS':`,
 
-                correctAnswers: ['manzana', 'mandarina', 'naranja', 'coco', 'melón', 'limon', 'granadilla', 'uvas'], // Ampliado pero solo 4 serán evaluadas
+                correctAnswers: ['manzana', 'mandarina', 'naranja', 'coco', 'melón', 'limón', 'granadilla', 'uvas'], // Ampliado pero solo 4 serán evaluadas
                 numInputs: 4, // <-- Establecido a 4 inputs
             },
             {
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 type: "semantic_field",
                 question: "'Campo semántico de LITERATURA':", //
-                allWords: ["Narrador", "Poema", "Verso", "Tema", "Novela", "Metáfora", "Personaje", "Desenlace", "Conflicto", "Género", "Argumento", "Símbolo", "Prosa", "Clímax", "Trama", "Epílogo"],
+                allWords: ["Personaje", "Bicicleta", "Teclado", "Narrador", "Conflicto", "Calculadora", "Símbolo", "Paraguas", "Nevera", "Argumento", "Tornillo", "Metáfora", "Tema", "Cuchara", "Desenlace", "Planeta"],
                 correctWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora"],
                 maxSelections: 8, // Máximo de palabras que el usuario puede seleccionar
                 videoSrc: ""
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: "semantic_field",
-                question: "'campo Léxico de ENFERMEDADES':", //
+                question: "'Campo Léxico de ENFERMEDADES':", //
                 allWords: ["Hambre", "Diabetes", "Pereza", "Calambre", "Tuberculosis", "Correr", "Asma", "Hipertensión", "Influenza", "Artritis", "Educar", "Cáncer", "Sueño"],
                 correctWords: ["diabetes", "hipertensión", "asma", "cáncer", "tuberculosis", "influenza", "artritis"],
                 maxSelections: 7,
