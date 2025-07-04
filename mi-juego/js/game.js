@@ -49,18 +49,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLevel = 1;
     let currentQuestionIndex = 0;
     let lives = 5;
-    let score = 0; // Score acumulado del juego
+    let score = 0; // Score acumulado del juego, AHORA REPRESENTARÁ EL PORCENTAJE TOTAL
     let correctAnswersInCurrentLevel = 0; // Contador de preguntas completamente correctas en el nivel actual
 
     // Total de niveles definidos en el juego
-    const totalLevels = 3; 
+    const totalLevels = 3;
+
+    // --- Nuevas constantes para la ponderación de score (AÑADIDAS/MODIFICADAS) ---
+    const totalQuestionsLevel1 = 3; // Nivel 1 tiene 3 preguntas
+    const totalQuestionsLevel2 = 3; // Nivel 2 tiene 3 preguntas
+    const totalQuestionsLevel3 = 3; // Nivel 3 tiene 3 preguntas
+
+    const scorePerQuestionLevel1 = (25 / totalQuestionsLevel1); // 25% / 3 preguntas
+    const scorePerQuestionLevel2 = (25 / totalQuestionsLevel2); // 25% / 3 preguntas
+    const scorePerQuestionLevel3 = (50 / totalQuestionsLevel3); // 50% / 3 preguntas
+    // --- FIN Nuevas constantes ---
 
     let selectedAssociationOptions = {
         main: [],
         sub: []
     };
 
-    // --- Estructura de Preguntas por Nivel ---
+    // --- Estructura de Preguntas por Nivel (MODIFICADA EN LEVEL3) ---
     const gameQuestions = {
         level1: [
             {
@@ -103,9 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: "text_input",
                 // Pregunta ajustada para 4 inputs y un campo semántico más conciso
                 question: `Escriba cuatro elementos que pertenezcan al campo semántico 'FRUTAS REDONDAS':`,
-                
+
                 correctAnswers: ['manzana', 'mandarina', 'naranja', 'coco', 'melón', 'limon', 'granadilla', 'uvas'], // Ampliado pero solo 4 serán evaluadas
-                numInputs: 4 , // <-- Establecido a 4 inputs
+                numInputs: 4, // <-- Establecido a 4 inputs
             },
             {
                 type: "text_input",
@@ -121,14 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 correctAnswers: ['agua', 'aguado', 'aguacero', 'aguamarina', 'aguantar'],
                 numInputs: 4 // <-- Establecido a 4 inputs
             }
-        ], 
+        ],
         // --- FIN DEL NIVEL 2 ---
         // ¡IMPORTANTE! Asegúrate de que haya una coma aquí para separar los niveles
         // --- INICIO DEL NIVEL 3 ---
         level3: [
             {
                 type: "semantic_field",
-                question: "'Campo semantico de LITERATURA':",
+                question: "'Campo semántico de LITERATURA':", //
                 allWords: ["Narrador", "Poema", "Verso", "Tema", "Novela", "Metáfora", "Personaje", "Desenlace", "Conflicto", "Género", "Argumento", "Símbolo", "Prosa", "Clímax", "Trama", "Epílogo"],
                 correctWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora"],
                 maxSelections: 8, // Máximo de palabras que el usuario puede seleccionar
@@ -136,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: "semantic_field",
-                question: "'Familia Lexica de EDUCAR:",
+                question: "'Familia Léxica de EDUCAR':", //
                 allWords: ["Educar", "Parcial", "Corroborar", "Educativo", "Evaluar", "Estudiar", "Educación", "Examen", "Educador"],
                 correctWords: ["educar", "educación", "educativo", "educador"],
                 maxSelections: 4,
@@ -144,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: "semantic_field",
-                question: "'Campo lexico de ENFERMEDADES':",
+                question: "'campo Léxico de ENFERMEDADES':", //
                 allWords: ["Hambre", "Diabetes", "Pereza", "Calambre", "Tuberculosis", "Correr", "Asma", "Hipertensión", "Influenza", "Artritis", "Educar", "Cáncer", "Sueño"],
                 correctWords: ["diabetes", "hipertensión", "asma", "cáncer", "tuberculosis", "influenza", "artritis"],
                 maxSelections: 7,
@@ -222,8 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (questionVideoElement) {
                 questionVideoElement.src = question.videoSrc;
                 questionVideoElement.load();
-                videoExplanation.classList.remove('hidden');
             }
+            videoExplanation.classList.remove('hidden');
             currentQuestionText.textContent = question.question;
             renderSimpleOptions(question.options); // Llama a la función para botones
         } else if (question.type === "text_input") { // Esto cubre el Nivel 2
@@ -247,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const semanticFieldMainTitleDiv = document.createElement('div');
             semanticFieldMainTitleDiv.classList.add('semantic-field-main-box-title'); // Clase para estilos CSS
 
-            // Extrae el título del campo semántico de la pregunta (lo que está entre comillas simples)
+            // Extrae la palabra clave entre comillas simples y prepara el texto para la comparación
+            // Si NO se encuentra una palabra entre comillas simples en la pregunta, usa un título genérico
             const regexMatch = question.question; 
             if (regexMatch) {
                 semanticFieldMainTitleDiv.textContent = `${regexMatch}`;
@@ -257,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
             answersGrid.appendChild(semanticFieldMainTitleDiv); // Añadirlo al answersGrid
 
             // Configurar el texto de la instrucción (ej. "SELECCIONA LAS PALABRAS CORRECTAS")
-            currentQuestionText.textContent = "SELECCIONA LAS PALABRAS CORRECTAS"; 
+            currentQuestionText.textContent = "SELECCIONA LAS PALABRAS CORRECTAS: " //
 
             // Renderizar las palabras seleccionables y el botón de enviar
             renderSemanticFieldArea(question); // Pasa el objeto de pregunta completo
@@ -316,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentRow.appendChild(inputField);
             }
         }
-        
+
         const submitButton = document.createElement('button');
         submitButton.id = 'submit-text-answer';
         submitButton.textContent = 'Enviar Respuestas';
@@ -353,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wordsContainer.style.flexWrap = 'wrap';
         wordsContainer.style.justifyContent = 'center';
         wordsContainer.style.gap = '10px';
-        wordsContainer.style.maxWidth = '80%'; 
+        wordsContainer.style.maxWidth = '80%';
         wordsContainer.style.margin = '20px auto'; // Centrar y añadir espacio
 
         questionData.allWords.forEach(word => {
@@ -367,9 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const maxSelectionsAllowed = questionData.maxSelections || questionData.correctWords.length;
 
                 if (wordElement.classList.contains('selected')) {
-                    wordElement.classList.remove('selected'); 
+                    wordElement.classList.remove('selected');
                 } else if (selectedWords < maxSelectionsAllowed) {
-                    wordElement.classList.add('selected'); 
+                    wordElement.classList.add('selected');
                 } else {
                     // Feedback visual si se intenta seleccionar más del límite
                     // Opcional: alert('Has alcanzado el límite de palabras a seleccionar.');
@@ -413,11 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
         inputElements.forEach(input => input.disabled = true);
         submitButton.disabled = true;
 
-        const feedbackMessages = []; 
+        const feedbackMessages = [];
 
         const availableCorrectAnswers = currentQuestionData.correctAnswers.map(ans => ans.trim().toLowerCase());
         const userAnswersNormalized = typedAnswersArray.map(ans => ans.trim().toLowerCase());
-        
+
         // 1. Verificar campos vacíos
         if (userAnswersNormalized.some(ans => ans === "")) {
             allInputsCorrectOverall = false;
@@ -433,12 +444,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Crear una copia de las respuestas correctas disponibles para "consumirlas"
-        let tempAvailableCorrectAnswers = [...availableCorrectAnswers]; 
+        let tempAvailableCorrectAnswers = [...availableCorrectAnswers];
         const individualInputCorrectness = new Array(inputElements.length).fill(false); // Para el feedback visual individual
 
         userAnswersNormalized.forEach((userAns, index) => {
             const foundIndex = tempAvailableCorrectAnswers.indexOf(userAns);
-            if (foundIndex !== -1 && userAns !== "") { 
+            if (foundIndex !== -1 && userAns !== "") {
                 individualInputCorrectness[index] = true; // Marcar este input como correcto individualmente
                 tempAvailableCorrectAnswers.splice(foundIndex, 1); // Remover la respuesta de la lista para evitar que se use de nuevo
                 correctInputsThisQuestion++; // Incrementar el contador de inputs correctos para la puntuación
@@ -459,8 +470,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // PUNTUACIÓN Y GESTIÓN DE VIDAS PARA EL NIVEL 2
-        score += correctInputsThisQuestion * 0.25; // Sumar 0.25 por cada input correcto individual
+        // PUNTUACIÓN Y GESTIÓN DE VIDAS PARA EL NIVEL 2 (MODIFICADO)
+        // Calcular el porcentaje de inputs correctos en esta pregunta y sumarlo al score total
+        const percentageCorrectInputs = correctInputsThisQuestion / currentQuestionData.numInputs;
+        score += scorePerQuestionLevel2 * percentageCorrectInputs;
 
         if (allInputsCorrectOverall && feedbackMessages.length === 0) {
             // Si todos los inputs son correctos y no hay problemas de formato (vacío/duplicado)
@@ -471,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             // Si hay algún input incorrecto, vacío o duplicado, se pierde una vida
-            lives--; 
+            lives--;
             updateLivesDisplay();
 
             let feedbackDiv = answersGrid.querySelector('.feedback-message');
@@ -480,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedbackDiv.classList.add('feedback-message');
                 answersGrid.appendChild(feedbackDiv);
             }
-            
+
             if (feedbackMessages.length > 0) {
                 // Mensajes específicos si hay vacíos o duplicados
                  feedbackDiv.textContent = `Algunas respuestas fueron incorrectas: ${feedbackMessages.join(' ')}`;
@@ -496,15 +509,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Después de dar feedback, pasar a la siguiente pregunta o mostrar pantalla de Game Over
         setTimeout(() => {
             if (lives <= 0) {
-                showGameOverScreen(false); 
+                showGameOverScreen(false);
             } else {
                 currentQuestionIndex++;
-                loadQuestion(); 
+                loadQuestion();
             }
         }, 2500); // Esperar 2.5 segundos antes de pasar
     };
 
-    // Lógica de validación para las preguntas de campo semántico (APLICA SÓLO AL NIVEL 3)
+    // Lógica de validación para las preguntas de campo semántico (APLICA SÓLO AL NIVEL 3) (MODIFICADO)
     const handleSemanticFieldAnswer = (playerSelectedWords, currentQuestionData, selectedElements, submitButton) => {
         let isPerfectAnswer = true;
         let correctSelectionsCount = 0;
@@ -557,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Actualizar vidas y avanzar el juego
         if (isPerfectAnswer) {
-            score += 10;
+            score += scorePerQuestionLevel3; // Suma el porcentaje total de la pregunta del Nivel 3
             correctAnswersInCurrentLevel++;
             setTimeout(() => advanceGame(true), 2500); // Esperar 2.5 segundos para mostrar feedback
         } else {
@@ -636,7 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             if (overallCorrect) {
-                score += 10; 
+                score += 10;
                 currentQuestionIndex++;
                 loadQuestion();
             } else {
@@ -654,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     };
 
-    // Maneja la respuesta a una pregunta de opción múltiple (USADO EXCLUSIVAMENTE POR NIVEL 1)
+    // Maneja la respuesta a una pregunta de opción múltiple (USADO EXCLUSIVAMENTE POR NIVEL 1) (MODIFICADO)
     const handleAnswer = (clickedButton, isCorrect) => {
         // Asegúrate de que esta lógica SOLO se ejecute para el Nivel 1
         if (currentLevel !== 1) {
@@ -676,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
         answersGrid.querySelectorAll('.answer-button').forEach(btn => btn.disabled = true);
 
         if (isCorrect) {
-            score += 10; // Puntuación de 10 puntos para preguntas de Nivel 1
+            score += scorePerQuestionLevel1; // Puntuación de 10 puntos para preguntas de Nivel 1
             clickedButton.classList.add('correct');
             correctAnswersInCurrentLevel++; // Suma al contador de preguntas correctas del nivel
         } else {
@@ -766,11 +779,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 levelCompleteScreen.classList.remove('fade-out');
             }
 
-            currentLevel++; 
-            currentQuestionIndex = 0; 
-            correctAnswersInCurrentLevel = 0; 
+            currentLevel++;
+            currentQuestionIndex = 0;
+            correctAnswersInCurrentLevel = 0;
 
-            loadQuestion(); 
+            loadQuestion();
 
         }, 800);
     };
@@ -804,14 +817,14 @@ document.addEventListener('DOMContentLoaded', () => {
             currentQuestionIndex = 0;
             lives = 5;
             score = 0;
-            correctAnswersInCurrentLevel = 0; 
+            correctAnswersInCurrentLevel = 0;
 
             if (questionVideoElement) {
                 questionVideoElement.src = '';
                 questionVideoElement.load();
             }
             videoExplanation.classList.add('hidden');
-            answersGrid.innerHTML = ''; 
+            answersGrid.innerHTML = '';
             currentQuestionText.textContent = '';
             subQuestionArea.classList.add('hidden');
             subAnswersArea.innerHTML = '';
@@ -826,7 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 800);
     };
 
-    // Función para mostrar la pantalla de Game Over (victoria o derrota)
+    // Función para mostrar la pantalla de Game Over (victoria o derrota) (MODIFICADA)
     const showGameOverScreen = (isWin = false) => {
         if (gamePlayScreen) gamePlayScreen.classList.add('fade-out');
         if (levelCompleteScreen) levelCompleteScreen.classList.add('fade-out');
@@ -838,7 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (levelCompleteScreen) {
                 levelCompleteScreen.classList.add('hidden');
-                levelCompleteScreen.classList.remove('fade-ont');
+                levelCompleteScreen.classList.remove('fade-out'); // Corregido: antes decía 'fade-ont'
             }
 
             if (gameOverScreen) {
@@ -850,7 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameOverPlayerName.textContent = playerName;
             }
             if (gameOverScoreDisplay) {
-                gameOverScoreDisplay.textContent = score;
+                gameOverScoreDisplay.textContent = `${score.toFixed(2)}%`; // Mostrar score como porcentaje con 2 decimales
             }
 
             const gameOverTitle = gameOverScreen ? gameOverScreen.querySelector('h2') : null;
@@ -858,10 +871,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isWin) {
                 if (gameOverTitle) gameOverTitle.textContent = `¡Felicidades, Explorador ${playerName}!`;
-                if (gameOverMessage) gameOverMessage.innerHTML = `Has completado el Ascenso Cósmico con ${score} puntos y ${lives} vidas restantes.`;
+                if (gameOverMessage) gameOverMessage.innerHTML = `Has completado el Ascenso Cósmico con ${score.toFixed(2)}% de puntuación y ${lives} vidas restantes.`; //
             } else {
                 if (gameOverTitle) gameOverTitle.textContent = `¡Fin del Ascenso, Explorador ${playerName}!`;
-                if (gameOverMessage) gameOverMessage.innerHTML = `Tu puntuación final fue: <span id="game-over-score">${score}</span> puntos.<br>Te has quedado sin vidas.`;
+                if (gameOverMessage) gameOverMessage.innerHTML = `Tu puntuación final fue: <span id="game-over-score">${score.toFixed(2)}%</span>.<br>Te has quedado sin vidas.`; //
             }
 
             if (restartGameButton) {
@@ -873,17 +886,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners Iniciales ---
 
-    updateStartButtonState(); 
+    updateStartButtonState();
 
     avatarOptions.forEach(avatar => {
         avatar.addEventListener('click', () => {
             // Eliminar clases de estado de TODOS los avatares primero
             avatarOptions.forEach(opt => opt.classList.remove('selected', 'avatar-others'));
-            
+
             // Añadir 'selected' al avatar clickeado
             avatar.classList.add('selected');
             selectedAvatar = avatar.dataset.avatar;
-            
+
             // Aplicar 'avatar-others' a todos los avatares que NO fueron clickeados
             avatarOptions.forEach(opt => {
                 if (opt !== avatar) {
@@ -943,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentQuestionIndex = 0;
                 lives = 5;
                 score = 0;
-                correctAnswersInCurrentLevel = 0; 
+                correctAnswersInCurrentLevel = 0;
 
                 loadQuestion();
 
