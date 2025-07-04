@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: "text_input",
                 // Pregunta ajustada para 4 espacios/respuestas
                 question: "Escriba cuatro elementos que pertenezcan a la familia léxica de 'AGUA':",
-                correctAnswers: ['aguatero', 'aguado', 'aguacero', 'aguamarina', 'aguantar'],
+                correctAnswers: ['aguatero', 'aguado', 'aguacero', 'aguamarina', 'aguantar', 'aguaje'],
                 numInputs: 4 // <-- Establecido a 4 inputs
             }
         ],
