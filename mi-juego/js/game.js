@@ -871,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isWin) {
                 if (gameOverTitle) gameOverTitle.textContent = `¡Felicidades, Explorador ${playerName}!`;
-                if (gameOverMessage) gameOverMessage.innerHTML = `Has completado el Ascenso Cósmico con ${score.toFixed(2)}% de puntuación y ${lives} vidas restantes.`; //
+                if (gameOverMessage) gameOverMessage.innerHTML = `Has completado el Ascenso Cósmico con un ${score.toFixed(2)}% de puntuación y ${lives} vidas restantes.`; //
             } else {
                 if (gameOverTitle) gameOverTitle.textContent = `¡Fin del Ascenso, Explorador ${playerName}!`;
                 if (gameOverMessage) gameOverMessage.innerHTML = `Tu puntuación final fue: <span id="game-over-score">${score.toFixed(2)}%</span>.<br>Te has quedado sin vidas.`; //
