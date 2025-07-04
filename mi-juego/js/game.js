@@ -128,26 +128,26 @@ document.addEventListener('DOMContentLoaded', () => {
         level3: [
             {
                 type: "semantic_field",
-                question: "SELECCIONA LAS PALABRAS CORRECTAS 'LITERATURA':",
-                allWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora", "ecuación", "biología", "velocidad", "gravedad"],
+                question: "'Campo semantico de LITERATURA':",
+                allWords: ["Narrador", "Poema", "Verso", "Tema", "Novela", "Metáfora", "Personaje", "Desenlace", "Conflicto", "Género", "Argumento", "Símbolo", "Prosa", "Clímax", "Trama", "Epílogo"],
                 correctWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora"],
                 maxSelections: 8, // Máximo de palabras que el usuario puede seleccionar
                 videoSrc: ""
             },
             {
                 type: "semantic_field",
-                question: "SELECCIONA LAS PALABRAS CORRECTAS Deportes:",
-                allWords: ["fútbol", "baloncesto", "natación", "atletismo", "ajedrez", "poker", "lectura", "pintura", "voleibol", "ciclismo", "esgrima", "programación"],
-                correctWords: ["fútbol", "baloncesto", "natación", "atletismo", "voleibol", "ciclismo", "esgrima"],
-                maxSelections: 8,
+                question: "'Familia Lexica de EDUCAR:",
+                allWords: ["Educar", "Parcial", "Corroborar", "Educativo", "Evaluar", "Estudiar", "Educación", "Examen", "Educador"],
+                correctWords: ["educar", "educación", "educativo", "educador"],
+                maxSelections: 4,
                 videoSrc: ""
             },
             {
                 type: "semantic_field",
-                question: "SELECCIONA LAS PALABRAS CORRECTAS que pertenecen al 'Campo semántico de Deportes':",
-                allWords: ["fútbol", "baloncesto", "natación", "atletismo", "ajedrez", "poker", "lectura", "pintura", "voleibol", "ciclismo", "esgrima", "programación"],
-                correctWords: ["fútbol", "baloncesto", "natación", "atletismo", "voleibol", "ciclismo", "esgrima"],
-                maxSelections: 8,
+                question: "'Campo lexico de ENFERMEDADES':",
+                allWords: ["Hambre", "Diabetes", "Pereza", "Calambre", "Tuberculosis", "Correr", "Asma", "Hipertensión", "Influenza", "Artritis", "Educar", "Cáncer", "Sueño"],
+                correctWords: ["diabetes", "hipertensión", "asma", "cáncer", "tuberculosis", "influenza", "artritis"],
+                maxSelections: 7,
                 videoSrc: ""
             }
         ]
@@ -248,9 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
             semanticFieldMainTitleDiv.classList.add('semantic-field-main-box-title'); // Clase para estilos CSS
 
             // Extrae el título del campo semántico de la pregunta (lo que está entre comillas simples)
-            const regexMatch = question.question.match(/'([^']+)'/); 
-            if (regexMatch && regexMatch[1]) {
-                semanticFieldMainTitleDiv.textContent = `Campo semántico de ${regexMatch[1]}`;
+            const regexMatch = question.question; 
+            if (regexMatch) {
+                semanticFieldMainTitleDiv.textContent = `${regexMatch}`;
             } else {
                 semanticFieldMainTitleDiv.textContent = "Campo Semántico"; // Fallback
             }
