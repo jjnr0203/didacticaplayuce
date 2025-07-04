@@ -618,22 +618,10 @@ button:disabled {
     align-items: center;
     /* box-sizing: border-box; */
     color: #ffdddd; 
-
-    padding: 100px; 
-    border-radius: 15px;
-    margin-top: 5px; 
-    width: 90%;
-    max-width: 600px;
-    flex-shrink: 0;
-    flex-grow: 1; 
-    display: flex; 
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
 }
 
 #game-over-screen h2 {
-    color: #ff4444;
+    color: #ff5e00;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     font-size: clamp(1.4em, 3.5vw, 2em);
     margin-bottom: 10px; 
@@ -646,13 +634,13 @@ button:disabled {
 }
 
 #game-over-screen #restart-game-button {
-    background: linear-gradient(45deg, #ff6666, #ff0000);
+    background: linear-gradient(45deg, #ff6666, #ff4800);
     box-shadow: 0 5px 20px rgba(255, 0, 0, 0.6);
     margin-top: 20px; 
 }
 
 #game-over-screen #restart-game-button:hover {
-    background: linear-gradient(45deg, #ff0000, #ff6666);
+    background: linear-gradient(45deg, #ff4800, #ff6666);
     box-shadow: 0 8px 25px rgba(255, 0, 0, 0.9);
 }
 
