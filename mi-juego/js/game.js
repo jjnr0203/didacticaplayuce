@@ -121,14 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: "text_input",
                 // La pregunta ya estaba ajustada para 4 espacios/respuestas
                 question: "Escriba cuatro elementos que pertenezcan al campo léxico de 'ESCUELA':",
-                correctAnswers: ['niños', 'profesor', 'aulas', 'estudiar', 'patio', 'rector', 'bar', 'aprender', 'enseñar', 'practicar', 'escribir', 'divertida', 'grande'], // Ajustado
+                correctAnswers: ['niños', 'profesores', 'estudiantes', 'aulas', 'estudiar', 'patio', 'rector', 'bar', 'aprender', 'enseñar', 'practicar', 'escribir', 'divertida', 'grande'], // Ajustado
                 numInputs: 4 // <-- Establecido a 4 inputs
             },
             {
                 type: "text_input",
                 // Pregunta ajustada para 4 espacios/respuestas
                 question: "Escriba cuatro elementos que pertenezcan a la familia léxica de 'AGUA':",
-                correctAnswers: ['agua', 'aguado', 'aguacero', 'aguamarina', 'aguantar'],
+                correctAnswers: ['aguatero', 'aguado', 'aguacero', 'aguamarina', 'aguantar'],
                 numInputs: 4 // <-- Establecido a 4 inputs
             }
         ],
