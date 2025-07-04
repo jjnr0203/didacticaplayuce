@@ -104,21 +104,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Pregunta ajustada para 4 inputs y un campo semántico más conciso
                 question: `Escriba cuatro elementos que pertenezcan al campo semántico 'FRUTAS REDONDAS':`,
                 
-                correctAnswers: ["manzana", "platano", "fresa", "naranja", "pera", "kiwi", "mango", "uva", "sandía", "melón", "cereza", "papaya", "coco", "limón", "piña"], // Ampliado pero solo 4 serán evaluadas
+                correctAnswers: ['manzana', 'mandarina', 'naranja', 'coco', 'melón', 'limon', 'granadilla', 'uvas'], // Ampliado pero solo 4 serán evaluadas
                 numInputs: 4 , // <-- Establecido a 4 inputs
             },
             {
                 type: "text_input",
                 // La pregunta ya estaba ajustada para 4 espacios/respuestas
-                question: "Escriba cuatro elementos que pertenezcan al campo léxico de 'Escuela':",
-                correctAnswers: ["morfología", "sintaxis", "semántica", "fonología", "lexicología", "gramática", "pragmática", "fonética"], // Ajustado
+                question: "Escriba cuatro elementos que pertenezcan al campo léxico de 'ESCUELA':",
+                correctAnswers: ['niños', 'profesor', 'aulas', 'estudiar', 'patio', 'rector', 'bar', 'aprender', 'enseñar', 'practicar', 'escribir', 'divertida', 'grande'], // Ajustado
                 numInputs: 4 // <-- Establecido a 4 inputs
             },
             {
                 type: "text_input",
                 // Pregunta ajustada para 4 espacios/respuestas
-                question: "Identifica cuatro tipos de lenguaje no verbal: la __________ (movimientos corporales), la ___________ (uso del espacio personal), la __________ (uso de la voz), y la __________ (símbolos y signos).",
-                correctAnswers: ["kinésica", "proxémica", "paralingüística", "semiótica", "apariencia", "háptica", "cronémica", "artefactos"], // Ajustado
+                question: "Escriba cuatro elementos que pertenezcan a la familia léxica de 'AGUA':",
+                correctAnswers: ['agua', 'aguado', 'aguacero', 'aguamarina', 'aguantar'],
                 numInputs: 4 // <-- Establecido a 4 inputs
             }
         ], 
@@ -128,10 +128,18 @@ document.addEventListener('DOMContentLoaded', () => {
         level3: [
             {
                 type: "semantic_field",
-                question: "SELECCIONA LAS PALABRAS CORRECTAS que pertenecen al 'Campo semántico de Literatura':",
+                question: "SELECCIONA LAS PALABRAS CORRECTAS 'LITERATURA':",
                 allWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora", "ecuación", "biología", "velocidad", "gravedad"],
                 correctWords: ["narrador", "personaje", "argumento", "tema", "conflicto", "desenlace", "símbolo", "metáfora"],
                 maxSelections: 8, // Máximo de palabras que el usuario puede seleccionar
+                videoSrc: ""
+            },
+            {
+                type: "semantic_field",
+                question: "SELECCIONA LAS PALABRAS CORRECTAS Deportes:",
+                allWords: ["fútbol", "baloncesto", "natación", "atletismo", "ajedrez", "poker", "lectura", "pintura", "voleibol", "ciclismo", "esgrima", "programación"],
+                correctWords: ["fútbol", "baloncesto", "natación", "atletismo", "voleibol", "ciclismo", "esgrima"],
+                maxSelections: 8,
                 videoSrc: ""
             },
             {
