@@ -51,7 +51,7 @@ body {
 
 /* H1 y H2 globales: aplicarán a Game Over y Level Complete, pero serán anulados
    para la selección de avatar si definimos reglas más específicas. */
-h1, h2 {
+h1 {
     color: #9affff;
     text-shadow: 0 0 8px rgba(154, 255, 255, 0.6);
     font-size: clamp(1.2em, 2.8vw, 1.8em); 
@@ -59,25 +59,34 @@ h1, h2 {
     margin-top: 15px; 
 }
 
+h2 {
+    color: #00ff88;
+    margin-bottom: 10px; 
+    text-shadow: 0 0 8px rgba(154, 255, 255, 0.6);
+    font-size: clamp(1em, 2.8vw, 1.8em); 
+}
+
 #avatar-selection {
     margin-bottom: 40px;
     animation: slideInUp 0.8s ease-out 0.2s forwards;
-    opacity: 0;
+    opacity: 10%;
     max-width: 400px; 
     margin-left: auto; 
     margin-right: auto; 
     box-sizing: border-box; 
+    text-align: center;
 }
 
 /* Tamaño de letra para h1 y h2 DENTRO de #avatar-selection */
 #avatar-selection h1 {
     font-size: clamp(1.8em, 4.5vw, 2.5em); 
-    margin-bottom: 15px; 
+    margin-bottom: 20px; 
 }
 
 #avatar-selection h2 {
     font-size: clamp(1.2em, 3.5vw, 2em); 
-    margin-bottom: 20px; 
+    margin-bottom: 15px; 
+
 }
 
 
@@ -87,7 +96,7 @@ h1, h2 {
 }
 
 .input-group {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -99,13 +108,14 @@ h1, h2 {
     color: #c0d0ff;
     text-shadow: 0 0 5px rgba(192, 208, 255, 0.4);
     font-weight: 500;
+    margin-bottom: 5%;
 }
 
 .input-group input {
-    padding: 12px 20px;
+    padding: 15px 30px;
     width: 80%; 
     max-width: 350px;
-    border-radius: 25px;
+    border-radius: 15px;
     border: 2px solid #00aaff;
     background-color: rgba(0, 0, 40, 0.6);
     color: #e0f0ff;
@@ -186,7 +196,7 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 25px;
+    margin-top: 20px;
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
